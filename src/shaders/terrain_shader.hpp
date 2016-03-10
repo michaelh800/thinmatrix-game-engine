@@ -23,9 +23,6 @@ protected:
 
 private:
     static constexpr int MAX_LIGHTS = 4;
-    static constexpr auto VERTEX_SHADER_FILE = "res/shaders/terrain.v.glsl";
-    static constexpr auto FRAGMENT_SHADER_FILE = "res/shaders/terrain.f.glsl";
-
     GLint transformationMatrixLocation_;
     GLint viewMatrixLocation_;
     GLint projectionMatrixLocation_;

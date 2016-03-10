@@ -6,13 +6,10 @@
 
 
 namespace {
-
-constexpr GLfloat SIZE = 800.0f;
-constexpr GLfloat MAX_HEIGHT = 40.0f;
-constexpr GLfloat MAX_PIXEL_COLOR = 16777216.0f;
-
+    constexpr GLfloat SIZE = 800.0f;
+    constexpr GLfloat MAX_HEIGHT = 40.0f;
+    constexpr GLfloat MAX_PIXEL_COLOR = 16777216.0f;
 }
-
 
 Terrain::Terrain(GLfloat x, GLfloat z, Loader& loader,TerrainTexturePack texturePack,
     TerrainTexture blendMap, const std::string& heightMap

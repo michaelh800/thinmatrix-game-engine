@@ -1,6 +1,11 @@
 #include "shaders/terrain_shader.hpp"
 
 
+namespace {
+    constexpr auto VERTEX_SHADER_FILE = "res/shaders/terrain.v.glsl";
+    constexpr auto FRAGMENT_SHADER_FILE = "res/shaders/terrain.f.glsl";
+}
+
 TerrainShader::TerrainShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {

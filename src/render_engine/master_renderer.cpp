@@ -1,16 +1,14 @@
 #include "render_engine/master_renderer.hpp"
-#include "render_engine/display.hpp"
+#include "render_engine/display_manager.hpp"
 
 
 namespace {
-
-constexpr float FOV = 70.0f;
-constexpr float NEAR_PLANE = 0.1f;
-constexpr float FAR_PLANE = 1000.0f;
-constexpr float RED = 0.588f;
-constexpr float GREEN = 0.718f;
-constexpr float BLUE = 0.706f;
-
+    constexpr float FOV = 70.0f;
+    constexpr float NEAR_PLANE = 0.1f;
+    constexpr float FAR_PLANE = 1000.0f;
+    constexpr float RED = 0.5444f;
+    constexpr float GREEN = 0.62f;
+    constexpr float BLUE = 0.69f;
 }
 
 MasterRenderer::MasterRenderer(Loader& loader) : skyboxRenderer_(loader) {
@@ -27,18 +25,18 @@ void MasterRenderer::prepare() const {
 void MasterRenderer::render(std::vector<Light> const& lights, Camera const& camera) {
     prepare();
     entityShader_.start();
-    entityShader_.loadSkyColor(glm::vec3(RED, GREEN, BLUE));
+    entityShader_.loadSkyColor(glm::vec3{RED, GREEN, BLUE});
     entityShader_.loadLights(lights);
     entityShader_.loadViewMatrix(camera);
     entityRenderer_.render(entities_);
     entityShader_.stop();
     terrainShader_.start();
-    terrainShader_.loadSkyColor(glm::vec3(RED, GREEN, BLUE));
+    terrainShader_.loadSkyColor(glm::vec3{RED, GREEN, BLUE});
     terrainShader_.loadLights(lights);
     terrainShader_.loadViewMatrix(camera);
     terrainRenderer_.render(terrains_);
     terrainShader_.stop();
-    skyboxRenderer_.render(camera);
+    skyboxRenderer_.render(camera, glm::vec3{RED, GREEN, BLUE});
     entities_.clear();
     terrains_.clear();
 }
@@ -61,7 +59,8 @@ void MasterRenderer::disableCulling() {
 }
 
 void MasterRenderer::resetProjectionMatrix() {
-    projectionMatrix_ = glm::perspective(FOV, Display::getAspectRatio(), NEAR_PLANE, FAR_PLANE);
+    projectionMatrix_ = glm::perspective(
+        FOV, DisplayManager::getAspectRatio(), NEAR_PLANE, FAR_PLANE);
     entityRenderer_.loadProjectionMatrix(projectionMatrix_);
     terrainRenderer_.loadProjectionMatrix(projectionMatrix_);
     skyboxRenderer_.loadProjectionMatrix(projectionMatrix_);

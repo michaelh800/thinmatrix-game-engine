@@ -1,5 +1,4 @@
 #include "game/game_engine.hpp"
-#include <iostream>
 
 
 GameEngine::~GameEngine() {
@@ -8,8 +7,6 @@ GameEngine::~GameEngine() {
 
 void GameEngine::run() {
     bool running = true;
-    sf::Clock fpsClock;
-    bool displayFps = false;
 
     while (running) {
         sf::Event event;
@@ -23,10 +20,6 @@ void GameEngine::run() {
                 renderer_.resetProjectionMatrix();
             }
         }
-
-        sf::Time elapsed = fpsClock.restart();
-        float fps = 1000000.0f / elapsed.asMicroseconds();
-        if (displayFps) std::cout << "FPS: " << fps << std::endl;
 
         game_.update();
         game_.render(renderer_);

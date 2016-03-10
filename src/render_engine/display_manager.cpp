@@ -1,39 +1,44 @@
-#include "render_engine/display.hpp"
+#include "render_engine/display_manager.hpp"
 
 
-sf::Window Display::window_;
+sf::Window DisplayManager::window_;
+sf::Clock  DisplayManager::clock_;
+sf::Time   DisplayManager::frameTime_;
 
-Display::Display(sf::String const& name) {
-    // sf::VideoMode fullscreen = sf::VideoMode::getFullscreenModes().front();
-    // window_.create(fullscreen, name, sf::Style::Fullscreen, sf::ContextSettings(32));
+DisplayManager::DisplayManager(sf::String const& name) {
     window_.create(sf::VideoMode(900, 675), name, sf::Style::Default, sf::ContextSettings(32));
     window_.setVerticalSyncEnabled(true);
     window_.setPosition(sf::Vector2i(50, 25));
     window_.setMouseCursorVisible(false);
 }
 
-void Display::resize(int width, int height) {
+void DisplayManager::resize(int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void Display::update() {
+void DisplayManager::update() {
+    frameTime_ = clock_.restart();
     window_.display();
 }
 
-void Display::close() {
+void DisplayManager::close() {
     window_.close();
 }
 
-sf::Window& Display::getWindow() {
+sf::Window& DisplayManager::getWindow() {
     return window_;
 }
 
-float Display::getAspectRatio() {
+float DisplayManager::getAspectRatio() {
     sf::Vector2u dimensions = window_.getSize();
     return (float) dimensions.x / dimensions.y;
 }
 
-sf::Vector2i Display::getMousePositionDelta() {
+sf::Time const& DisplayManager::getFrameTime() {
+    return frameTime_;
+}
+
+sf::Vector2i DisplayManager::getMousePositionDelta() {
     sf::Vector2i center = static_cast<sf::Vector2i>(window_.getSize() / 2U);
     sf::Vector2i delta = sf::Mouse::getPosition(window_) - center;
     sf::Mouse::setPosition(center, window_);

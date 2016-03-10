@@ -2,6 +2,11 @@
 #include "toolbox/math.hpp"
 
 
+namespace {
+    constexpr auto VERTEX_SHADER_FILE = "res/shaders/static.v.glsl";
+    constexpr auto FRAGMENT_SHADER_FILE = "res/shaders/static.f.glsl";
+}
+
 StaticShader::StaticShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {

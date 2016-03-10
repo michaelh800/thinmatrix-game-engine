@@ -7,7 +7,9 @@
 
 class Shader {
 public:
-    Shader(std::string const& vertexShaderFile, std::string const& fragmentShaderFile);
+    Shader(
+        std::string const& vertexShaderFile,
+        std::string const& fragmentShaderFile);
     ~Shader();
 
     void start() const;

@@ -1,16 +1,14 @@
 #include "entities/camera.hpp"
-#include "render_engine/display.hpp"
+#include "render_engine/display_manager.hpp"
 #include <SFML/Window.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 
 namespace {
-
-constexpr float EYE_LEVEL = 6.0f;
-constexpr float WALK_SPEED = 0.2f;
-constexpr float RUN_SPEED = 2.5f;
-constexpr float SENSITIVITY = 0.005f;
-
+    constexpr float EYE_LEVEL = 6.0f;
+    constexpr float WALK_SPEED = 20.0f;
+    constexpr float RUN_SPEED = 100.0f;
+    constexpr float SENSITIVITY = 0.005f;
 }
 
 Camera::Camera(bool freeRoam)
@@ -18,7 +16,7 @@ Camera::Camera(bool freeRoam)
 { }
 
 void Camera::update(Terrain const& terrain) {
-    sf::Vector2i mousePositionDelta = Display::getMousePositionDelta();
+    sf::Vector2i mousePositionDelta = DisplayManager::getMousePositionDelta();
     updateDirection(glm::vec2(mousePositionDelta.x, mousePositionDelta.y));
     updatePosition(terrain);
 }
@@ -47,18 +45,19 @@ void Camera::updateDirection(glm::vec2 const& mousePositionDelta) {
 
 void Camera::updatePosition(Terrain const& terrain) {
     float speed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) ? RUN_SPEED : WALK_SPEED;
+    float dt = DisplayManager::getFrameTime().asSeconds();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-       position_ += speed * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
+       position_ += speed * dt * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
-        position_ -= speed * glm::cross(viewDirection_, up_);
+        position_ -= speed * dt * glm::cross(viewDirection_, up_);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        position_ -= speed * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
+        position_ -= speed * dt * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
-        position_ += speed * glm::cross(viewDirection_, up_);
+        position_ += speed * dt * glm::cross(viewDirection_, up_);
     }
 
     if (!freeRoam_) {

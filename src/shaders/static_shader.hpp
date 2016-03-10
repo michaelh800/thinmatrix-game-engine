@@ -25,9 +25,6 @@ protected:
 
 private:
     static constexpr int MAX_LIGHTS = 4;
-    static constexpr auto VERTEX_SHADER_FILE = "res/shaders/static.v.glsl";
-    static constexpr auto FRAGMENT_SHADER_FILE = "res/shaders/static.f.glsl";
-
     GLint transformationMatrixLocation_;
     GLint viewMatrixLocation_;
     GLint projectionMatrixLocation_;
