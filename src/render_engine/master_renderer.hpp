@@ -20,6 +20,7 @@ public:
     static void enableCulling();
     static void disableCulling();
     void resetProjectionMatrix();
+    glm::mat4 const& getProjectionMatrix() const;
 
 private:
     using EntityMap = std::unordered_map<TexturedModel const*, std::vector<Entity const*>>;

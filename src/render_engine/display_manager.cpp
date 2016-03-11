@@ -1,9 +1,9 @@
 #include "render_engine/display_manager.hpp"
 
 
-sf::Window DisplayManager::window_;
-sf::Clock  DisplayManager::clock_;
-sf::Time   DisplayManager::frameTime_;
+sf::Window   DisplayManager::window_;
+sf::Clock    DisplayManager::clock_;
+sf::Time     DisplayManager::frameTime_;
 
 DisplayManager::DisplayManager(sf::String const& name) {
     window_.create(sf::VideoMode(900, 675), name, sf::Style::Default, sf::ContextSettings(32));

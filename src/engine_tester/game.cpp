@@ -1,4 +1,4 @@
-#include "game/game.hpp"
+#include "engine_tester/game.hpp"
 #include "render_engine/obj_loader.hpp"
 
 
@@ -10,7 +10,7 @@ Game::Game() {
     TerrainTexture bTexture(loader_.loadTexture("res/textures/terrain/path.png"));
     TerrainTexturePack texturePack(backgroundTexture, rTexture, gTexture, bTexture);
     TerrainTexture blendMap(loader_.loadTexture("res/textures/terrain/blendMap.png"));
-    terrains_.push_back(Terrain(-0.5f, -0.5f, loader_, texturePack, blendMap, "res/textures/terrain/heightmap.png"));
+    terrains_.emplace_back(-0.5f, -0.5f, loader_, texturePack, blendMap, "res/textures/terrain/heightmap.png");
 
     // set light positions
     glm::vec3 lightHeight = glm::vec3(0, 17, 0);
@@ -31,9 +31,9 @@ Game::Game() {
     lampModel_ = TexturedModel(ObjLoader::loadObjModel("res/models/lamp/lamp.obj", loader_), lampTexture);
 
     // place lamp entities
-    entities_.push_back(Entity(&lampModel_, lightPos1, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
-    entities_.push_back(Entity(&lampModel_, lightPos2, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
-    entities_.push_back(Entity(&lampModel_, lightPos3, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+    entities_.emplace_back(&lampModel_, lightPos1, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+    entities_.emplace_back(&lampModel_, lightPos2, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+    entities_.emplace_back(&lampModel_, lightPos3, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
 
     // create tree model
     ModelTexture treeTexture(loader_.loadTexture("res/textures/pine/pine.png"));
@@ -52,10 +52,10 @@ Game::Game() {
         for (int z = -200; z <= 200; z += 20) {
             float random = (float)rand() / RAND_MAX;
             if (random < 0.1) {
-                entities_.push_back(Entity(&fernModel_, glm::vec3(x, terrains_.front().getHeightOfTerrain(x, z), z), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), rand()%4));
+                entities_.emplace_back(&fernModel_, glm::vec3(x, terrains_.front().getHeightOfTerrain(x, z), z), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1), rand()%4);
             }
             if (random > 0.8) {
-                entities_.push_back(Entity(&treeModel_, glm::vec3(x, terrains_.front().getHeightOfTerrain(x, z), z), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1)));
+                entities_.emplace_back(&treeModel_, glm::vec3(x, terrains_.front().getHeightOfTerrain(x, z), z), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
             }
         }
     }
@@ -78,8 +78,4 @@ void Game::render(MasterRenderer& renderer) {
     }
     renderer.render(lights_, camera_);
     gui_renderer_.render(guis_);
-}
-
-Loader& Game::getLoader() {
-    return loader_;
 }

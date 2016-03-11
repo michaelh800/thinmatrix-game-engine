@@ -1,4 +1,4 @@
-#include "game/game_engine.hpp"
+#include "engine_tester/game_engine.hpp"
 
 
 GameEngine::~GameEngine() {
@@ -22,6 +22,9 @@ void GameEngine::run() {
         }
 
         game_.update();
+        picker_.update();
+        auto ray = picker_.getCurrentRay();
+        // Do something with ray?
         game_.render(renderer_);
         display_.update();
     }

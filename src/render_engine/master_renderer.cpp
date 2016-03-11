@@ -65,3 +65,7 @@ void MasterRenderer::resetProjectionMatrix() {
     terrainRenderer_.loadProjectionMatrix(projectionMatrix_);
     skyboxRenderer_.loadProjectionMatrix(projectionMatrix_);
 }
+
+glm::mat4 const& MasterRenderer::getProjectionMatrix() const {
+    return projectionMatrix_;
+}

@@ -16,7 +16,8 @@ public:
     void update();
     void render(MasterRenderer& renderer);
 
-    Loader& getLoader();
+    Loader& getLoader() { return loader_; }
+    Camera const& getCamera() { return camera_; }
 
 private:
     Loader                  loader_;

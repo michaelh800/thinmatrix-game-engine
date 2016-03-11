@@ -10,7 +10,7 @@ public:
     void update();
     void close();
 
-    sf::Window& getWindow();
+    static sf::Window& getWindow();
     static float getAspectRatio();
     static sf::Time const& getFrameTime();
     static sf::Vector2i getMousePositionDelta();
