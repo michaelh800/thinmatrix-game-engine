@@ -6,7 +6,7 @@
 
 
 namespace {
-    constexpr GLfloat SIZE = 800.0f;
+    constexpr GLfloat SIZE = 400.0f;
     constexpr GLfloat MAX_HEIGHT = 40.0f;
     constexpr GLfloat MAX_PIXEL_COLOR = 16777216.0f;
 }

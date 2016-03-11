@@ -3,6 +3,6 @@
 
 int main(int argc, char **argv) {
     GameEngine engine;
-    engine.run();
+    engine.doMainLoop();
     return 0;
 }

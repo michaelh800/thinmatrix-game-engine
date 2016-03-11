@@ -69,3 +69,11 @@ void MasterRenderer::resetProjectionMatrix() {
 glm::mat4 const& MasterRenderer::getProjectionMatrix() const {
     return projectionMatrix_;
 }
+
+void MasterRenderer::renderScene(std::vector<Entity> const& entities,
+    Terrain const& terrain, std::vector<Light> const& lights, Camera const& camera)
+{
+    processTerrain(&terrain);
+    for (Entity const& entity : entities) processEntity(&entity);
+    render(lights, camera);
+}

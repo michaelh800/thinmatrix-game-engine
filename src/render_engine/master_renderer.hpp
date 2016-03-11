@@ -12,6 +12,11 @@ class MasterRenderer {
 public:
     MasterRenderer(Loader& loader);
 
+    void renderScene(std::vector<Entity> const& entities,
+        Terrain const& terrain,
+        std::vector<Light> const& lights,
+        Camera const& camera);
+
     void prepare() const;
     void render(std::vector<Light> const& lights, Camera const& camera);
     void processEntity(Entity const* entity);
