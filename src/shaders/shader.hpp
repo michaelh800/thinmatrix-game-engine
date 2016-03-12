@@ -1,8 +1,8 @@
 #pragma once
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp>
 #include <string>
 
 class Shader {
@@ -16,9 +16,6 @@ public:
     void stop() const;
 
 protected:
-    GLuint programId_;
-    GLuint vertexShaderId_, fragmentShaderId_;
-
     void linkShaders();
     virtual void bindAttributes() = 0;
     void bindAttribute(GLuint attribute, GLchar const* variableName);
@@ -31,9 +28,11 @@ protected:
     void loadVector3(GLint location, glm::vec3 const& value) const;
     void loadMatrix (GLint location, glm::mat4 const& matrix) const;
 
-    void printLog(GLuint handle, std::string const& filename="");
-
 private:
+    void printLog(GLuint handle, std::string const& filename="");
     void readTextFromFile(std::string const& filename, char*& output);
     GLuint compileShader(std::string const& filename, GLenum shaderType);
+
+    GLuint programId_;
+    GLuint vertexShaderId_, fragmentShaderId_;
 };

@@ -1,5 +1,7 @@
 #include "terrain/terrain.hpp"
 #include "toolbox/math.hpp"
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/packing.hpp>
 #include <cstdio>
 #include <cmath>
 #include <vector>

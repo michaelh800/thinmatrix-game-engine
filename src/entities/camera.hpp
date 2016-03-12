@@ -1,7 +1,7 @@
 #pragma once
 #include "terrain/terrain.hpp"
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp>
 
 class Camera {
 public:

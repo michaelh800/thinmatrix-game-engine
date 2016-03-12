@@ -1,4 +1,6 @@
 #include "shaders/shader.hpp"
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/type_ptr.hpp>
 #include <cstring>
 #include <fstream>
 
@@ -14,10 +16,6 @@ Shader::Shader(std::string const& vertexShaderFile, std::string const& fragmentS
 
 Shader::~Shader() {
     stop();
-    glDetachShader(programId_, vertexShaderId_);
-    glDetachShader(programId_, fragmentShaderId_);
-    glDeleteShader(vertexShaderId_);
-    glDeleteShader(fragmentShaderId_);
     glDeleteProgram(programId_);
 }
 
@@ -33,6 +31,10 @@ void Shader::linkShaders() {
     glLinkProgram(programId_);
     glValidateProgram(programId_);
     getAllUniformLocations();
+    glDetachShader(programId_, vertexShaderId_);
+    glDetachShader(programId_, fragmentShaderId_);
+    glDeleteShader(vertexShaderId_);
+    glDeleteShader(fragmentShaderId_);
 }
 
 void Shader::bindAttribute(GLuint attribute, GLchar const* variableName) {

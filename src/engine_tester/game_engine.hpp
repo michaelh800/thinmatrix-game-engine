@@ -11,6 +11,7 @@
 #include "toolbox/mouse_picker.hpp"
 #include "water/water_renderer.hpp"
 #include "water/water_tile.hpp"
+#include "water/water_frame_buffers.hpp"
 #include <vector>
 
 class GameEngine {
@@ -21,9 +22,6 @@ public:
     void doMainLoop();
 
 private:
-    void update();
-    void render();
-
     DisplayManager          display_{};
     Glew                    glew_{};
     Loader                  loader_{};
@@ -37,4 +35,5 @@ private:
     std::vector<GuiTexture> guis_;
     WaterRenderer           waterRenderer_{loader_, renderer_.getProjectionMatrix()};
     std::vector<WaterTile>  waters_;
+    WaterFrameBuffers       waterFbos_{};
 };

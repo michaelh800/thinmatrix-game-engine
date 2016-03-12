@@ -3,8 +3,7 @@
 #include "textures/terrain_texture_pack.hpp"
 #include <GL/glew.h>
 #include <SFML/Graphics.hpp>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
+#include <glm/vec3.hpp>
 #include <string>
 
 class Terrain {

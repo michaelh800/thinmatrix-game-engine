@@ -1,7 +1,6 @@
 #pragma once
 #include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 
 class GuiTexture {
 public:

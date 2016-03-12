@@ -7,6 +7,7 @@ GameEngine::~GameEngine() {
 }
 
 void GameEngine::doMainLoop() {
+
     /* *********************************************************** */
     /*                        INITIALIZE                           */
     /* *********************************************************** */
@@ -27,7 +28,7 @@ void GameEngine::doMainLoop() {
     glm::vec3 lightPos3 = glm::vec3(-20, terrains_.front().getHeightOfTerrain(-20, 150), 150);
 
     // add lights
-    lights_.emplace_back(glm::vec3(0, 1000, -7000), glm::vec3(0.4f, 0.4f, 0.4f));
+    lights_.emplace_back(glm::vec3(0, 1000, -5000), glm::vec3(0.4f, 0.4f, 0.4f));
     lights_.emplace_back(lightPos1 + lightHeight, glm::vec3(2, 0, 0), glm::vec3(1.0f, 0.01f, 0.002f));
     lights_.emplace_back(lightPos2 + lightHeight, glm::vec3(0, 2, 2), glm::vec3(1.0f, 0.01f, 0.002f));
     lights_.emplace_back(lightPos3 + lightHeight, glm::vec3(2, 2, 0), glm::vec3(1.0f, 0.01f, 0.002f));
@@ -70,10 +71,11 @@ void GameEngine::doMainLoop() {
     }
 
     // create guis
-    guis_.emplace_back(loader_.loadTexture("res/textures/guis/thinmatrix.png"), glm::vec2(-0.75f, 0.9f), glm::vec2(0.25f, 0.25f));
+    guis_.emplace_back(loader_.loadTexture("res/textures/guis/thinmatrix.png"), glm::vec2(-0.75f, 0.9f), glm::vec2(0.25f));
 
     // create waters
     waters_.emplace_back(0.0f, 0.0f, 0.0f);
+    guis_.emplace_back(waterFbos_.getReflectionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f));
 
 
     /* *********************************************************** */
@@ -98,6 +100,10 @@ void GameEngine::doMainLoop() {
         camera_.update(terrains_.front());
         // picker_.update();
         // auto ray = picker_.getCurrentRay();
+
+        waterFbos_.bindReflectionFrameBuffer();
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_);
+        waterFbos_.unbindCurrentFrameBuffer();
 
         renderer_.renderScene(entities_, terrains_.front(), lights_, camera_);
         waterRenderer_.render(waters_, camera_);

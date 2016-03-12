@@ -1,6 +1,7 @@
 #include "entities/camera.hpp"
 #include "render_engine/display_manager.hpp"
 #include <SFML/Window.hpp>
+#define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 

@@ -1,9 +1,8 @@
 #pragma once
 #include "models/raw_model.hpp"
 #include "render_engine/loader.hpp"
-#include <GL/glew.h>
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
+#include <glm/vec3.hpp>
 #include <vector>
 #include <string>
 
