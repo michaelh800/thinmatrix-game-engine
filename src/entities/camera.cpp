@@ -28,7 +28,11 @@ glm::mat4 Camera::getViewMatrix() const {
     return glm::lookAt(eye, center, up_);
 }
 
-glm::vec3 const& Camera::getPosition() const {
+void Camera::invertPitch() {
+    viewDirection_.y *= -1.0f;
+}
+
+glm::vec3& Camera::getPosition() {
     return position_;
 }
 

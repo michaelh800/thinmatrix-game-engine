@@ -24,15 +24,19 @@ void MasterRenderer::prepare() const {
     glClearColor(RED, GREEN, BLUE, 1);
 }
 
-void MasterRenderer::render(std::vector<Light> const& lights, Camera const& camera) {
+void MasterRenderer::render(std::vector<Light> const& lights, Camera const& camera,
+    glm::vec4 const& clipPlane)
+{
     prepare();
     entityShader_.start();
+    entityShader_.loadClipPlane(clipPlane);
     entityShader_.loadSkyColor(glm::vec3{RED, GREEN, BLUE});
     entityShader_.loadLights(lights);
     entityShader_.loadViewMatrix(camera);
     entityRenderer_.render(entities_);
     entityShader_.stop();
     terrainShader_.start();
+    terrainShader_.loadClipPlane(clipPlane);
     terrainShader_.loadSkyColor(glm::vec3{RED, GREEN, BLUE});
     terrainShader_.loadLights(lights);
     terrainShader_.loadViewMatrix(camera);
@@ -72,10 +76,10 @@ glm::mat4 const& MasterRenderer::getProjectionMatrix() const {
     return projectionMatrix_;
 }
 
-void MasterRenderer::renderScene(std::vector<Entity> const& entities,
-    Terrain const& terrain, std::vector<Light> const& lights, Camera const& camera)
+void MasterRenderer::renderScene(std::vector<Entity> const& entities, Terrain const& terrain,
+    std::vector<Light> const& lights, Camera const& camera, glm::vec4 const& clipPlane)
 {
     processTerrain(&terrain);
     for (Entity const& entity : entities) processEntity(&entity);
-    render(lights, camera);
+    render(lights, camera, clipPlane);
 }

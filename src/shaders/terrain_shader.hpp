@@ -15,6 +15,7 @@ public:
     void loadLights(std::vector<Light> const& lights) const;
     void loadShineVariables(GLfloat shineDamper, GLfloat reflectivity) const;
     void loadSkyColor(glm::vec3 const& rgbColor) const;
+    void loadClipPlane(glm::vec4 const& plane) const;
     void connectTextureUnits() const;
 
 protected:
@@ -37,4 +38,5 @@ private:
     GLint gTextureLocation_;
     GLint bTextureLocation_;
     GLint blendMapLocation_;
+    GLint planeLocation_;
 };

@@ -1,4 +1,5 @@
 #pragma once
+#include "toolbox/gl_handles.hpp"
 #include <GL/glew.h>
 
 class WaterFrameBuffers {
@@ -18,16 +19,16 @@ private:
     void initializeRefractionFrameBuffer();
     void bindFrameBuffer(GLuint fbo, int width, int height) const;
 
-    GLuint createFrameBuffer();
-    GLuint createColorTextureAttachment(int width, int height);
-    GLuint createDepthTextureAttachment(int width, int height);
-    GLuint createDepthBufferAttachment(int width, int height);
+    gl::FramebufferHandle  createFrameBuffer();
+    gl::TextureHandle      createColorTextureAttachment(int width, int height);
+    gl::TextureHandle      createDepthTextureAttachment(int width, int height);
+    gl::RenderbufferHandle createDepthBufferAttachment(int width, int height);
 
-    GLuint reflectionFbo_;
-    GLuint reflectionTextureId_;
-    GLuint reflectionDepthBufferId_;
+    gl::FramebufferHandle  reflectionFbo_;
+    gl::TextureHandle      reflectionTexture_;
+    gl::RenderbufferHandle reflectionDepthBuffer_;
 
-    GLuint refractionFbo_;
-    GLuint refractionTextureId_;
-    GLuint refractionDepthTextureId_;
+    gl::FramebufferHandle  refractionFbo_;
+    gl::TextureHandle      refractionTexture_;
+    gl::TextureHandle      refractionDepthTexture_;
 };

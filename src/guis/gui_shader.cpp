@@ -4,7 +4,7 @@
 GuiShader::GuiShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {
-    linkShaders();
+    initialize();
 }
 
 void GuiShader::bindAttributes() {

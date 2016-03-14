@@ -109,6 +109,7 @@ void SkyboxRenderer::bindTextures() {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, dayTextureId_);
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, nightTextureId_);
+    // glBindTexture(GL_TEXTURE_CUBE_MAP, nightTextureId_);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, dayTextureId_);
     shader_.loadBlendFactor(blendFactor);
 }

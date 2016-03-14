@@ -10,7 +10,7 @@ namespace {
 StaticShader::StaticShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {
-    linkShaders();
+    initialize();
 }
 
 void StaticShader::bindAttributes() {
@@ -29,6 +29,7 @@ void StaticShader::getAllUniformLocations() {
     skyColorLocation_ = getUniformLocation("skyColor");
     numberOfRowsLocation_ = getUniformLocation("numberOfRows");
     offsetLocation_ = getUniformLocation("offset");
+    planeLocation_ = getUniformLocation("plane");
 
     for (int i = 0; i < MAX_LIGHTS; i++) {
         lightPositionLocation_[i] = getUniformLocation(
@@ -85,4 +86,8 @@ void StaticShader::loadNumberOfRows(int numberOfRows) const {
 
 void StaticShader::loadOffset(glm::vec2 const& offset) const {
     loadVector2(offsetLocation_, offset);
+}
+
+void StaticShader::loadClipPlane(glm::vec4 const& plane) const {
+    loadVector4(planeLocation_, plane);
 }

@@ -9,7 +9,7 @@ namespace {
 TerrainShader::TerrainShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {
-    linkShaders();
+    initialize();
 }
 
 void TerrainShader::bindAttributes() {
@@ -30,6 +30,7 @@ void TerrainShader::getAllUniformLocations() {
     gTextureLocation_ = getUniformLocation("gTexture");
     bTextureLocation_ = getUniformLocation("bTexture");
     blendMapLocation_ = getUniformLocation("blendMap");
+    planeLocation_ = getUniformLocation("plane");
 
     for (int i = 0; i < MAX_LIGHTS; i++) {
         lightPositionLocation_[i] = getUniformLocation(
@@ -82,4 +83,8 @@ void TerrainShader::connectTextureUnits() const {
     loadInteger(gTextureLocation_, 2);
     loadInteger(bTextureLocation_, 3);
     loadInteger(blendMapLocation_, 4);
+}
+
+void TerrainShader::loadClipPlane(glm::vec4 const& plane) const {
+    loadVector4(planeLocation_, plane);
 }

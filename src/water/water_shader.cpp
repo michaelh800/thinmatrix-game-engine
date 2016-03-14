@@ -9,7 +9,7 @@ namespace {
 WaterShader::WaterShader()
     : Shader(VERTEX_SHADER_FILE, FRAGMENT_SHADER_FILE)
 {
-    linkShaders();
+    initialize();
 }
 
 void WaterShader::bindAttributes() {

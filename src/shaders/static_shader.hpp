@@ -18,6 +18,7 @@ public:
     void loadSkyColor(glm::vec3 const& rgbColor) const;
     void loadNumberOfRows(int numberOfRows) const;
     void loadOffset(glm::vec2 const& offset) const;
+    void loadClipPlane(glm::vec4 const& plane) const;
 
 protected:
     virtual void bindAttributes() override;
@@ -37,4 +38,5 @@ private:
     GLint skyColorLocation_;
     GLint numberOfRowsLocation_;
     GLint offsetLocation_;
+    GLint planeLocation_;
 };

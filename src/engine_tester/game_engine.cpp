@@ -75,7 +75,8 @@ void GameEngine::doMainLoop() {
 
     // create waters
     waters_.emplace_back(0.0f, 0.0f, 0.0f);
-    guis_.emplace_back(waterFbos_.getReflectionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.5f));
+    guis_.emplace_back(waterFbos_.getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.25f));
+    guis_.emplace_back(waterFbos_.getRefractionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f));
 
 
     /* *********************************************************** */
@@ -101,11 +102,24 @@ void GameEngine::doMainLoop() {
         // picker_.update();
         // auto ray = picker_.getCurrentRay();
 
-        waterFbos_.bindReflectionFrameBuffer();
-        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_);
-        waterFbos_.unbindCurrentFrameBuffer();
+        glEnable(GL_CLIP_DISTANCE0);
+        float waterHeight = waters_.front().getHeight();
 
-        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_);
+        waterFbos_.bindReflectionFrameBuffer();
+        float distance = 2.0f * (camera_.getPosition().y - waterHeight);
+        camera_.getPosition().y -= distance;
+        camera_.invertPitch();
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, 1.0f, 0.0f, -waterHeight});
+        camera_.getPosition().y += distance;
+        camera_.invertPitch();
+
+        waterFbos_.bindRefractionFrameBuffer();
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, -1.0f, 0.0f, waterHeight});
+
+        glDisable(GL_CLIP_DISTANCE0);
+
+        waterFbos_.unbindCurrentFrameBuffer();
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0, 0, 0, 0});
         waterRenderer_.render(waters_, camera_);
         guiRenderer_.render(guis_);
         display_.update();

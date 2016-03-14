@@ -8,8 +8,10 @@ public:
     Camera(bool freeRoam=false);
 
     void update(Terrain const& terrain);
+    void invertPitch();
+
     glm::mat4 getViewMatrix() const;
-    glm::vec3 const& getPosition() const;
+    glm::vec3& getPosition();
 
 private:
     bool freeRoam_;

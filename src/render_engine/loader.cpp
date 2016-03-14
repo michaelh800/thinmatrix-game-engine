@@ -3,18 +3,6 @@
 #include <iostream>
 
 
-Loader::~Loader() {
-    for (GLuint vaoId : vaoIds_) {
-        glDeleteVertexArrays(1, &vaoId);
-    }
-    for (GLuint vboId : vboIds_) {
-        glDeleteBuffers(1, &vboId);
-    }
-    for (GLuint texId : texIds_) {
-        glDeleteTextures(1, &texId);
-    }
-}
-
 RawModel Loader::loadToVao(std::vector<GLfloat> const& positions,
                            std::vector<GLfloat> const& textureCoords,
                            std::vector<GLfloat> const& normals,
@@ -42,34 +30,31 @@ GLuint Loader::loadTexture(std::string const& textureFile) {
         std::cerr << "[ERROR]: Failed to load texture: " << textureFile << std::endl;
     }
 
-    GLuint texId;
-    glGenTextures(1, &texId);
-    glBindTexture(GL_TEXTURE_2D, texId);
+    gl::TextureHandle texture;
+    glGenTextures(1, &texture);
+    GLuint textureId = texture.get();
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
     glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        GL_RGBA,
-        image.getSize().x,
-        image.getSize().y,
-        0,
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        image.getPixelsPtr()
+        GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y,
+        0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr()
     );
+
     glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_MAG_FILTER, GL_LINEAR              );
-    glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_WRAP_S,     GL_REPEAT              );
-    glTexParameteri(GL_TEXTURE_2D,  GL_TEXTURE_WRAP_T,     GL_REPEAT              );
-    glTexEnvi(      GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE,   GL_MODULATE            );
-    texIds_.push_back(texId);
-    return texId;
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS,   -0.4f                  );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR              );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,     GL_REPEAT              );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,     GL_REPEAT              );
+    textures_.push_back(std::move(texture));
+    return textureId;
 }
 
 GLuint Loader::loadCubeMap(std::vector<std::string> const& textureFiles) {
-    GLuint texId;
-    glGenTextures(1, &texId);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texId);
+    gl::TextureHandle texture;
+    glGenTextures(1, &texture);
+    GLuint textureId = texture.get();
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
 
     for (GLuint i = 0; i < textureFiles.size(); i++) {
         sf::Image image;
@@ -78,15 +63,8 @@ GLuint Loader::loadCubeMap(std::vector<std::string> const& textureFiles) {
         }
 
         glTexImage2D(
-            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-            0,
-            GL_RGB,
-            image.getSize().x,
-            image.getSize().y,
-            0,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            image.getPixelsPtr()
+            GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.getSize().x,
+            image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr()
         );
     }
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR       );
@@ -94,30 +72,33 @@ GLuint Loader::loadCubeMap(std::vector<std::string> const& textureFiles) {
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S,     GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T,     GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R,     GL_CLAMP_TO_EDGE);
-    texIds_.push_back(texId);
-    return texId;
+    textures_.push_back(std::move(texture));
+    return textureId;
 }
 
 GLuint Loader::createVao() {
-    GLuint vaoId;
-    glGenVertexArrays(1, &vaoId);
-    vaoIds_.push_back(vaoId);
+    gl::VertexArrayHandle vao;
+    glGenVertexArrays(1, &vao);
+    GLuint vaoId = vao.get();
+    vaos_.push_back(std::move(vao));
     glBindVertexArray(vaoId);
     return vaoId;
 }
 
 void Loader::bindIndexBuffer(std::vector<GLuint> const& indices) {
-    GLuint vboId;
-    glGenBuffers(1, &vboId);
-    vboIds_.push_back(vboId);
+    gl::BufferHandle vbo;
+    glGenBuffers(1, &vbo);
+    GLuint vboId = vbo.get();
+    vbos_.push_back(std::move(vbo));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vboId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
 }
 
 void Loader::storeDataInAttributeList(int attributeNumber, int coordinateSize, std::vector<GLfloat> const& data) {
-    GLuint vboId;
-    glGenBuffers(1, &vboId);
-    vboIds_.push_back(vboId);
+    gl::BufferHandle vbo;
+    glGenBuffers(1, &vbo);
+    GLuint vboId = vbo.get();
+    vbos_.push_back(std::move(vbo));
     glBindBuffer(GL_ARRAY_BUFFER, vboId);
     glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(GLfloat), data.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, GL_FALSE, 0, 0);

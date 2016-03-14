@@ -1,7 +1,9 @@
 #pragma once
+#include "toolbox/gl_handles.hpp"
 #include <GL/glew.h>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 #include <glm/mat4x4.hpp>
 #include <string>
 
@@ -16,7 +18,7 @@ public:
     void stop() const;
 
 protected:
-    void linkShaders();
+    void initialize();
     virtual void bindAttributes() = 0;
     void bindAttribute(GLuint attribute, GLchar const* variableName);
 
@@ -26,6 +28,7 @@ protected:
     void loadInteger(GLint location, GLint value) const;
     void loadVector2(GLint location, glm::vec2 const& value) const;
     void loadVector3(GLint location, glm::vec3 const& value) const;
+    void loadVector4(GLint location, glm::vec4 const& value) const;
     void loadMatrix (GLint location, glm::mat4 const& matrix) const;
 
 private:
@@ -33,6 +36,6 @@ private:
     void readTextFromFile(std::string const& filename, char*& output);
     GLuint compileShader(std::string const& filename, GLenum shaderType);
 
-    GLuint programId_;
-    GLuint vertexShaderId_, fragmentShaderId_;
+    gl::ShaderHandle program_;
+    std::string vertexShaderFile_, fragmentShaderFile_;
 };

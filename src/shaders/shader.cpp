@@ -6,43 +6,46 @@
 
 
 Shader::Shader(std::string const& vertexShaderFile, std::string const& fragmentShaderFile)
-    : programId_(glCreateProgram())
-    , vertexShaderId_(compileShader(vertexShaderFile, GL_VERTEX_SHADER))
-    , fragmentShaderId_(compileShader(fragmentShaderFile, GL_FRAGMENT_SHADER))
-{
-    glAttachShader(programId_, vertexShaderId_  );
-    glAttachShader(programId_, fragmentShaderId_);
-}
+    : program_(glCreateProgram())
+    , vertexShaderFile_(vertexShaderFile)
+    , fragmentShaderFile_(fragmentShaderFile)
+{ }
 
 Shader::~Shader() {
-    stop();
-    glDeleteProgram(programId_);
+    if (program_.get()) {
+        stop();
+    }
 }
 
 void Shader::start() const {
-    glUseProgram(programId_);
+    glUseProgram(program_.get());
 }
 void Shader::stop() const {
     glUseProgram(0);
 }
 
-void Shader::linkShaders() {
+void Shader::initialize() {
+    gl::ShaderHandle vertexShader(compileShader(vertexShaderFile_, GL_VERTEX_SHADER));
+    gl::ShaderHandle fragmentShader(compileShader(fragmentShaderFile_, GL_FRAGMENT_SHADER));
+
+    glAttachShader(program_.get(), vertexShader.get());
+    glAttachShader(program_.get(), fragmentShader.get());
+
     bindAttributes();
-    glLinkProgram(programId_);
-    glValidateProgram(programId_);
+    glLinkProgram(program_.get());
+    glValidateProgram(program_.get());
     getAllUniformLocations();
-    glDetachShader(programId_, vertexShaderId_);
-    glDetachShader(programId_, fragmentShaderId_);
-    glDeleteShader(vertexShaderId_);
-    glDeleteShader(fragmentShaderId_);
+
+    glDetachShader(program_.get(), vertexShader.get());
+    glDetachShader(program_.get(), fragmentShader.get());
 }
 
 void Shader::bindAttribute(GLuint attribute, GLchar const* variableName) {
-    glBindAttribLocation(programId_, attribute, variableName);
+    glBindAttribLocation(program_.get(), attribute, variableName);
 }
 
 GLint Shader::getUniformLocation(GLchar const* name) const {
-    return glGetUniformLocation(programId_, name);
+    return glGetUniformLocation(program_.get(), name);
 }
 
 void Shader::loadFloat(GLint location, GLfloat value) const {
@@ -59,6 +62,10 @@ void Shader::loadVector2(GLint location, glm::vec2 const& value) const {
 
 void Shader::loadVector3(GLint location, glm::vec3 const& value) const {
     glUniform3f(location, value.x, value.y, value.z);
+}
+
+void Shader::loadVector4(GLint location, glm::vec4 const& value) const {
+    glUniform4f(location, value.x, value.y, value.z, value.w);
 }
 
 void Shader::loadMatrix(GLint location, glm::mat4 const& matrix) const {
