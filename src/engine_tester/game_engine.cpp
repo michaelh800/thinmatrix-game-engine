@@ -75,8 +75,6 @@ void GameEngine::doMainLoop() {
 
     // create waters
     waters_.emplace_back(0.0f, 0.0f, 0.0f);
-    guis_.emplace_back(waterFbos_.getReflectionTexture(), glm::vec2(-0.5f, 0.5f), glm::vec2(0.25f));
-    guis_.emplace_back(waterFbos_.getRefractionTexture(), glm::vec2(0.5f, 0.5f), glm::vec2(0.25f));
 
 
     /* *********************************************************** */

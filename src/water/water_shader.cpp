@@ -20,6 +20,8 @@ void WaterShader::getAllUniformLocations() {
     modelMatrixLocation_ = getUniformLocation("modelMatrix");
     viewMatrixLocation_ = getUniformLocation("viewMatrix");
     projectionMatrixLocation_ = getUniformLocation("projectionMatrix");
+    reflectionTextureLocation_ = getUniformLocation("reflectionTexture");
+    refractionTextureLocation_ = getUniformLocation("refractionTexture");
 }
 
 void WaterShader::loadModelMatrix(glm::mat4 const& matrix) const {
@@ -32,4 +34,9 @@ void WaterShader::loadViewMatrix(Camera const& camera) const {
 
 void WaterShader::loadProjectionMatrix(glm::mat4 const& matrix) const {
     loadMatrix(projectionMatrixLocation_, matrix);
+}
+
+void WaterShader::connectTextureUnits() const {
+    loadInteger(reflectionTextureLocation_, 0);
+    loadInteger(refractionTextureLocation_, 1);
 }

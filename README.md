@@ -4,4 +4,4 @@ This is a C++ implementation of the [ThinMatrix OpenGL 3D Game Engine tutorial s
 
 ![Current Screenshot](screenshot.png)
 
-Thanks for stopping by! Also, go check out [tcbrindle's implementation](https://github.com/tcbrindle/thinmatrix-gl-tutorials)! I've learned a lot from reading his code and much of my implementation has been influenced by his.
+Thanks for stopping by! Also, go check out [tcbrindle's implementation](https://github.com/tcbrindle/thinmatrix-gl-tutorials) if you have a chance; much of my implementation has been influenced by his (he deserves complete credit for the`gl_handles.hpp` file).

@@ -33,7 +33,7 @@ private:
     MousePicker             picker_{camera_, renderer_.getProjectionMatrix()};
     GuiRenderer             guiRenderer_{loader_};
     std::vector<GuiTexture> guis_;
-    WaterRenderer           waterRenderer_{loader_, renderer_.getProjectionMatrix()};
-    std::vector<WaterTile>  waters_;
     WaterFrameBuffers       waterFbos_{};
+    WaterRenderer           waterRenderer_{loader_, renderer_.getProjectionMatrix(), waterFbos_};
+    std::vector<WaterTile>  waters_;
 };
