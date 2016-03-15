@@ -64,7 +64,7 @@ void GameEngine::doMainLoop() {
             if (y >= 0.0f && random < 0.1) {
                 entities_.emplace_back(&fern, glm::vec3(x, y, z), glm::vec3(0), glm::vec3(1), rand()%4);
             }
-            if (y >= 0.0f && random > 0.8) {
+            if (y >= 0.0f && random > 0.7) {
                 entities_.emplace_back(&tree, glm::vec3(x, y, z), glm::vec3(0), glm::vec3(1));
             }
         }

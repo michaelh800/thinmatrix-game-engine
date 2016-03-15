@@ -14,7 +14,9 @@ namespace {
 
 Camera::Camera(bool freeRoam)
     : freeRoam_(freeRoam)
-{ }
+{
+    position_ += glm::vec3(0.0f, EYE_LEVEL, 0.0f);
+}
 
 void Camera::update(Terrain const& terrain) {
     sf::Vector2i mousePositionDelta = DisplayManager::getMousePositionDelta();
@@ -23,9 +25,7 @@ void Camera::update(Terrain const& terrain) {
 }
 
 glm::mat4 Camera::getViewMatrix() const {
-    glm::vec3 eye = position_ + glm::vec3(0.0f, EYE_LEVEL, 0.0f);
-    glm::vec3 center = eye + viewDirection_;
-    return glm::lookAt(eye, center, up_);
+    return glm::lookAt(position_, position_ + viewDirection_, up_);
 }
 
 void Camera::invertPitch() {
@@ -53,19 +53,19 @@ void Camera::updatePosition(Terrain const& terrain) {
     float dt = DisplayManager::getFrameTime().asSeconds();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-       position_ += speed * dt * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
+       position_ += speed * dt * viewDirection_;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
+        position_ -= speed * dt * viewDirection_;
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)) {
         position_ -= speed * dt * glm::cross(viewDirection_, up_);
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)) {
-        position_ -= speed * dt * glm::vec3(viewDirection_.x, viewDirection_.y, viewDirection_.z);
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) {
         position_ += speed * dt * glm::cross(viewDirection_, up_);
     }
 
     if (!freeRoam_) {
-        position_.y = terrain.getHeightOfTerrain(position_.x, position_.z);
+        position_.y = terrain.getHeightOfTerrain(position_.x, position_.z) + EYE_LEVEL;
     }
 }

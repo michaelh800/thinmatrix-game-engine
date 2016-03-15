@@ -12,10 +12,10 @@ public:
         glm::mat4 const& projection,
         WaterFrameBuffers const& fbos);
 
-    void render(std::vector<WaterTile> const& water, Camera const& camera);
+    void render(std::vector<WaterTile> const& water, Camera& camera);
 
 private:
-    void prepareRender(Camera const& camera);
+    void prepareRender(Camera& camera);
     void unbind() const;
     void loadProjectionMatrix(glm::mat4 const& projection) const;
 

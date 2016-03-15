@@ -27,9 +27,7 @@ WaterRenderer::WaterRenderer(Loader &loader, glm::mat4 const& projection,
     shader_.stop();
 }
 
-void WaterRenderer::render(std::vector<WaterTile> const& water,
-    Camera const& camera)
-{
+void WaterRenderer::render(std::vector<WaterTile> const& water, Camera& camera) {
     prepareRender(camera);
     for (WaterTile const& tile : water) {
         glm::mat4 modelMatrix = Math::createTransformationMatrix(
@@ -42,7 +40,7 @@ void WaterRenderer::render(std::vector<WaterTile> const& water,
     unbind();
 }
 
-void WaterRenderer::prepareRender(Camera const& camera) {
+void WaterRenderer::prepareRender(Camera& camera) {
     shader_.start();
     shader_.loadViewMatrix(camera);
     moveFactor_ += WAVE_SPEED * DisplayManager::getFrameTime().asSeconds();

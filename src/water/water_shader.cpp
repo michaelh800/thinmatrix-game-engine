@@ -24,14 +24,16 @@ void WaterShader::getAllUniformLocations() {
     refractionTextureLocation_ = getUniformLocation("refractionTexture");
     dudvMapLocation_ = getUniformLocation("dudvMap");
     moveFactorLocation_ = getUniformLocation("moveFactor");
+    cameraPositionLocation_ = getUniformLocation("cameraPosition");
 }
 
 void WaterShader::loadModelMatrix(glm::mat4 const& matrix) const {
     loadMatrix(modelMatrixLocation_, matrix);
 }
 
-void WaterShader::loadViewMatrix(Camera const& camera) const {
+void WaterShader::loadViewMatrix(Camera& camera) const {
     loadMatrix(viewMatrixLocation_, camera.getViewMatrix());
+    loadVector3(cameraPositionLocation_, camera.getPosition());
 }
 
 void WaterShader::loadProjectionMatrix(glm::mat4 const& matrix) const {

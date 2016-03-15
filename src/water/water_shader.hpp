@@ -7,7 +7,7 @@ public:
     WaterShader();
 
     void loadModelMatrix(glm::mat4 const& matrix) const;
-    void loadViewMatrix(Camera const& camera) const;
+    void loadViewMatrix(Camera& camera) const;
     void loadProjectionMatrix(glm::mat4 const& matrix) const;
     void loadMoveFactor(GLfloat moveFactor) const;
     void connectTextureUnits() const;
@@ -24,4 +24,5 @@ private:
     GLint refractionTextureLocation_;
     GLint dudvMapLocation_;
     GLint moveFactorLocation_;
+    GLint cameraPositionLocation_;
 };
