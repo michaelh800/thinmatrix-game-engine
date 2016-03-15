@@ -22,27 +22,27 @@ void GameEngine::doMainLoop() {
     terrains_.emplace_back(-0.5f, -0.5f, loader_, texturePack, blendMap, "res/textures/terrain/heightmap.png");
 
     // set light positions
-    glm::vec3 lightHeight = glm::vec3(0, 17, 0);
-    glm::vec3 lightPos1 = glm::vec3(-80, terrains_.front().getHeightOfTerrain(-80, -90), -90);
-    glm::vec3 lightPos2 = glm::vec3(65, terrains_.front().getHeightOfTerrain(65, -10), -10);
-    glm::vec3 lightPos3 = glm::vec3(-20, terrains_.front().getHeightOfTerrain(-20, 150), 150);
+    // glm::vec3 lightHeight = glm::vec3(0, 17, 0);
+    // glm::vec3 lightPos1 = glm::vec3(-80, terrains_.front().getHeightOfTerrain(-80, -90), -90);
+    // glm::vec3 lightPos2 = glm::vec3(65, terrains_.front().getHeightOfTerrain(65, -10), -10);
+    // glm::vec3 lightPos3 = glm::vec3(-20, terrains_.front().getHeightOfTerrain(-20, 150), 150);
 
     // add lights
-    lights_.emplace_back(glm::vec3(0, 1000, -5000), glm::vec3(0.4f, 0.4f, 0.4f));
-    lights_.emplace_back(lightPos1 + lightHeight, glm::vec3(2, 0, 0), glm::vec3(1.0f, 0.01f, 0.002f));
-    lights_.emplace_back(lightPos2 + lightHeight, glm::vec3(0, 2, 2), glm::vec3(1.0f, 0.01f, 0.002f));
-    lights_.emplace_back(lightPos3 + lightHeight, glm::vec3(2, 2, 0), glm::vec3(1.0f, 0.01f, 0.002f));
+    lights_.emplace_back(glm::vec3(0, 1000, -1000), glm::vec3(0.4f, 0.4f, 0.4f));
+    // lights_.emplace_back(lightPos1 + lightHeight, glm::vec3(2, 0, 0), glm::vec3(1.0f, 0.01f, 0.002f));
+    // lights_.emplace_back(lightPos2 + lightHeight, glm::vec3(0, 2, 2), glm::vec3(1.0f, 0.01f, 0.002f));
+    // lights_.emplace_back(lightPos3 + lightHeight, glm::vec3(2, 2, 0), glm::vec3(1.0f, 0.01f, 0.002f));
 
     // create lamp model
-    ModelTexture lampTexture(loader_.loadTexture("res/textures/lamp/lamp.png"));
-    lampTexture.setFakeLighting(true);
-    lampTexture.setNumberOfRows(1);
-    auto lamp = TexturedModel(ObjLoader::loadObjModel("res/models/lamp/lamp.obj", loader_), lampTexture);
+    // ModelTexture lampTexture(loader_.loadTexture("res/textures/lamp/lamp.png"));
+    // lampTexture.setFakeLighting(true);
+    // lampTexture.setNumberOfRows(1);
+    // auto lamp = TexturedModel(ObjLoader::loadObjModel("res/models/lamp/lamp.obj", loader_), lampTexture);
 
     // place lamp entities
-    entities_.emplace_back(&lamp, lightPos1, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
-    entities_.emplace_back(&lamp, lightPos2, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
-    entities_.emplace_back(&lamp, lightPos3, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+    // entities_.emplace_back(&lamp, lightPos1, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+    // entities_.emplace_back(&lamp, lightPos2, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+    // entities_.emplace_back(&lamp, lightPos3, glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
 
     // create tree model
     ModelTexture treeTexture(loader_.loadTexture("res/textures/pine/pine.png"));

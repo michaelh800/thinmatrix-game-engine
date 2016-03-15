@@ -1,16 +1,16 @@
 #include "water/water_renderer.hpp"
+#include "render_engine/display_manager.hpp"
 #include "toolbox/math.hpp"
+#include <cmath>
 
 
 namespace {
-    const std::vector<GLfloat> POSITIONS {
-        -1, -1,
-        -1,  1,
-         1, -1,
-         1, -1,
-        -1,  1,
-         1,  1
-    };
+    constexpr auto DUDV_MAP = "res/textures/water/waterDUDV.png";
+
+    constexpr float WAVE_SPEED = 0.03f;
+
+    const std::vector<GLfloat> POSITIONS
+        { -1, -1, -1,  1, 1, -1, 1, -1, -1,  1, 1,  1 };
 }
 
 constexpr float WaterTile::TILE_SIZE;
@@ -19,6 +19,7 @@ WaterRenderer::WaterRenderer(Loader &loader, glm::mat4 const& projection,
     WaterFrameBuffers const& fbos)
     : quad_(loader.loadToVao(POSITIONS, 2))
     , fbos_(fbos)
+    , dudvTextureId_(loader.loadTexture(DUDV_MAP))
 {
     shader_.start();
     shader_.connectTextureUnits();
@@ -27,7 +28,7 @@ WaterRenderer::WaterRenderer(Loader &loader, glm::mat4 const& projection,
 }
 
 void WaterRenderer::render(std::vector<WaterTile> const& water,
-    Camera const& camera) const
+    Camera const& camera)
 {
     prepareRender(camera);
     for (WaterTile const& tile : water) {
@@ -41,15 +42,20 @@ void WaterRenderer::render(std::vector<WaterTile> const& water,
     unbind();
 }
 
-void WaterRenderer::prepareRender(Camera const& camera) const {
+void WaterRenderer::prepareRender(Camera const& camera) {
     shader_.start();
     shader_.loadViewMatrix(camera);
+    moveFactor_ += WAVE_SPEED * DisplayManager::getFrameTime().asSeconds();
+    moveFactor_ = std::fmod(moveFactor_, 1);
+    shader_.loadMoveFactor(moveFactor_);
     glBindVertexArray(quad_.getVaoId());
     glEnableVertexAttribArray(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, fbos_.getReflectionTexture());
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, fbos_.getRefractionTexture());
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, dudvTextureId_);
 }
 
 void WaterRenderer::unbind() const {
