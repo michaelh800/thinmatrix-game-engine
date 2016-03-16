@@ -1,5 +1,6 @@
 #pragma once
 #include "shaders/shader.hpp"
+#include "entities/light.hpp"
 #include "entities/camera.hpp"
 
 class WaterShader final : public Shader {
@@ -10,6 +11,7 @@ public:
     void loadViewMatrix(Camera& camera) const;
     void loadProjectionMatrix(glm::mat4 const& matrix) const;
     void loadMoveFactor(GLfloat moveFactor) const;
+    void loadLight(Light const& sun) const;
     void connectTextureUnits() const;
 
 protected:
@@ -23,6 +25,9 @@ private:
     GLint reflectionTextureLocation_;
     GLint refractionTextureLocation_;
     GLint dudvMapLocation_;
+    GLint normalMapLocation_;
     GLint moveFactorLocation_;
     GLint cameraPositionLocation_;
+    GLint lightPositionLocation_;
+    GLint lightColorLocation_;
 };

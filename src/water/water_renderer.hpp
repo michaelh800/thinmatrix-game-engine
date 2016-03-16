@@ -12,10 +12,13 @@ public:
         glm::mat4 const& projection,
         WaterFrameBuffers const& fbos);
 
-    void render(std::vector<WaterTile> const& water, Camera& camera);
+    void render(
+        std::vector<WaterTile> const& water,
+        Camera& camera,
+        Light const& sun);
 
 private:
-    void prepareRender(Camera& camera);
+    void prepareRender(Camera& camera, Light const& sun);
     void unbind() const;
     void loadProjectionMatrix(glm::mat4 const& projection) const;
 
@@ -23,5 +26,6 @@ private:
     WaterShader shader_{};
     WaterFrameBuffers const& fbos_;
     GLuint dudvTextureId_;
+    GLuint normalMapTextureId_;
     float moveFactor_ = 0.0f;
 };

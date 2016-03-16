@@ -6,9 +6,8 @@
 
 namespace {
     constexpr auto DUDV_MAP = "res/textures/water/waterDUDV.png";
-
+    constexpr auto NORMAL_MAP = "res/textures/water/normalMap.png";
     constexpr float WAVE_SPEED = 0.03f;
-
     const std::vector<GLfloat> POSITIONS
         { -1, -1, -1,  1, 1, -1, 1, -1, -1,  1, 1,  1 };
 }
@@ -20,6 +19,7 @@ WaterRenderer::WaterRenderer(Loader &loader, glm::mat4 const& projection,
     : quad_(loader.loadToVao(POSITIONS, 2))
     , fbos_(fbos)
     , dudvTextureId_(loader.loadTexture(DUDV_MAP))
+    , normalMapTextureId_(loader.loadTexture(NORMAL_MAP))
 {
     shader_.start();
     shader_.connectTextureUnits();
@@ -27,8 +27,10 @@ WaterRenderer::WaterRenderer(Loader &loader, glm::mat4 const& projection,
     shader_.stop();
 }
 
-void WaterRenderer::render(std::vector<WaterTile> const& water, Camera& camera) {
-    prepareRender(camera);
+void WaterRenderer::render(std::vector<WaterTile> const& water, Camera& camera,
+    Light const& sun)
+{
+    prepareRender(camera, sun);
     for (WaterTile const& tile : water) {
         glm::mat4 modelMatrix = Math::createTransformationMatrix(
             glm::vec3(tile.getX(), tile.getHeight(), tile.getZ()),
@@ -40,9 +42,10 @@ void WaterRenderer::render(std::vector<WaterTile> const& water, Camera& camera) 
     unbind();
 }
 
-void WaterRenderer::prepareRender(Camera& camera) {
+void WaterRenderer::prepareRender(Camera& camera, Light const& sun) {
     shader_.start();
     shader_.loadViewMatrix(camera);
+    shader_.loadLight(sun);
     moveFactor_ += WAVE_SPEED * DisplayManager::getFrameTime().asSeconds();
     moveFactor_ = std::fmod(moveFactor_, 1);
     shader_.loadMoveFactor(moveFactor_);
@@ -54,6 +57,8 @@ void WaterRenderer::prepareRender(Camera& camera) {
     glBindTexture(GL_TEXTURE_2D, fbos_.getRefractionTexture());
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, dudvTextureId_);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, normalMapTextureId_);
 }
 
 void WaterRenderer::unbind() const {
