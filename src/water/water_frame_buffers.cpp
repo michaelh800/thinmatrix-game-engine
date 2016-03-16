@@ -3,8 +3,8 @@
 
 
 namespace {
-    constexpr int REFLECTION_WIDTH = 320, REFLECTION_HEIGHT = 1280;
-    constexpr int REFRACTION_WIDTH = 180, REFRACTION_HEIGHT = 720;
+    constexpr int REFLECTION_WIDTH = 900, REFLECTION_HEIGHT = 675;
+    constexpr int REFRACTION_WIDTH = 900, REFRACTION_HEIGHT = 675;
 }
 
 WaterFrameBuffers::WaterFrameBuffers() {

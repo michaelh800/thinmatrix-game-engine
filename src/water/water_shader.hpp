@@ -26,6 +26,7 @@ private:
     GLint refractionTextureLocation_;
     GLint dudvMapLocation_;
     GLint normalMapLocation_;
+    GLint depthMapLocation_;
     GLint moveFactorLocation_;
     GLint cameraPositionLocation_;
     GLint lightPositionLocation_;

@@ -107,12 +107,12 @@ void GameEngine::doMainLoop() {
         float distance = 2.0f * (camera_.getPosition().y - waterHeight);
         camera_.getPosition().y -= distance;
         camera_.invertPitch();
-        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, 1.0f, 0.0f, -waterHeight});
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, 1.0f, 0.0f, -waterHeight + 1.0f});
         camera_.getPosition().y += distance;
         camera_.invertPitch();
 
         waterFbos_.bindRefractionFrameBuffer();
-        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, -1.0f, 0.0f, waterHeight});
+        renderer_.renderScene(entities_, terrains_.front(), lights_, camera_, {0.0f, -1.0f, 0.0f, waterHeight + 1.0f});
 
         glDisable(GL_CLIP_DISTANCE0);
 

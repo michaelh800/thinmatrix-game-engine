@@ -24,6 +24,7 @@ void WaterShader::getAllUniformLocations() {
     refractionTextureLocation_ = getUniformLocation("refractionTexture");
     dudvMapLocation_ = getUniformLocation("dudvMap");
     normalMapLocation_ = getUniformLocation("normalMap");
+    depthMapLocation_ = getUniformLocation("depthMap");
     moveFactorLocation_ = getUniformLocation("moveFactor");
     cameraPositionLocation_ = getUniformLocation("cameraPosition");
     lightPositionLocation_ = getUniformLocation("lightPosition");
@@ -52,6 +53,7 @@ void WaterShader::connectTextureUnits() const {
     loadInteger(refractionTextureLocation_, 1);
     loadInteger(dudvMapLocation_, 2);
     loadInteger(normalMapLocation_, 3);
+    loadInteger(depthMapLocation_, 4);
 }
 
 void WaterShader::loadLight(Light const& sun) const {
